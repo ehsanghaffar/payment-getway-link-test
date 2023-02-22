@@ -3,8 +3,10 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="tldp | تست لینک درگاه پرداخت">
-    <main>
+    <header>
         <h1>تست لینک درگاه پرداخت</h1>
+    </header>
+    <main>
         <!-- TODO html lint -->
         <!-- TODO accesibility -->
         <form id="form">
@@ -12,22 +14,40 @@ import Layout from "../layouts/Layout.astro";
             <br />
             <button type="submit">تست کن</button>
         </form>
+        <div id="messages">
+            <div class="info"></div>
+            <div class="error"></div>
+            <div class="success"></div>
+        </div>
     </main>
+    <footer>
+        <a href="https://github.com/imkarimkarim/tldp" target="_blank"> GitHub</a>
+    </footer>
 </Layout>
+
+<!-- TODO: clear console.logs in production -->
 
 <script>
     import { isHttps, isValidPaymentGateway, isValidUrl } from "../utils";
+
+    const infoEl = document.querySelector("#messages .info");
+    const errorEl = document.querySelector("#messages .error");
+    const successEl = document.querySelector("#messages .success");
 
     let errors = [],
         infos = [],
         link;
     const handleSubmit = (e) => {
         e.preventDefault();
+        errorEl.innerHTML = "";
+        infoEl.innerHTML = "";
+        successEl.innerHTML = "";
+
         errors = [];
         infos = [];
         link = document.querySelector("input").value.trim();
         if (link.length === 0) {
-            infos.push("لطفا لینک رو وارد کنید...");
+            infos.push("لطفا لینک را وارد کنید...");
         } else if (!isValidUrl(link)) {
             infos.push("متن وارد شده لینک نیست!");
         } else if (!isHttps(link)) {
@@ -35,33 +55,38 @@ import Layout from "../layouts/Layout.astro";
         } else {
             isValidPaymentGateway(link, (valid, company) => {
                 if (!valid) {
-                    errors.push("لینک وارد شده در لیست درگاه های معتبر یافت نشد!");
+                    errors.push("خطر!!! لینک وارد شده در لیست درگاه های معتبر یافت نشد!");
                 } else {
                     console.log(valid, company);
+                    successEl.innerHTML = `لینک معتبر و متعلق به شرکت "${company}" است.`;
                 }
             });
-			// مارو گیر آوردی؟! :)
-			// خطر
-			// امنه
+
+            // مارو گیر آوردی؟! :)
+            // خطر
+            // امنه
             // TODO
             // فکر میکنید tldr اشتباه میکند؟
             // به پشتیبانی پیام دهید
 
-
-			// for info text
-			// for error xxx alert
-
-			
+            // for info text
+            // for error xxx alert
         }
 
-        errors.length > 0 && console.log(errors);
-        infos.length > 0 && console.log(infos);
+        if (errors.length > 0) {
+            console.log(errors);
+            errorEl.innerHTML = errors[0];
+        }
+        if (infos.length > 0) {
+            console.log(infos);
+            infoEl.textContent = infos[0];
+        }
     };
     document.getElementById("form").addEventListener("submit", handleSubmit);
 </script>
 
 <style>
-    main {
+    main, header {
         text-align: center;
     }
 
@@ -72,5 +97,26 @@ import Layout from "../layouts/Layout.astro";
     a {
         color: inherit;
         text-decoration: none;
+    }
+
+    #messages {
+        margin-top: 10px;
+    }
+    .info {
+        color: blue;
+    }
+    .error {
+        color: red;
+    }
+    .success {
+        color: green;
+    }
+
+    footer{
+        position: fixed;
+        bottom: 0;
+        left: 48.5%;
+        margin: 10px 0;
+        color: gray;
     }
 </style>
