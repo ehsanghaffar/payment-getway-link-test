@@ -1,6 +1,6 @@
 ---
 export interface Props {
-	title: string;
+    title: string;
 }
 
 const { title } = Astro.props;
@@ -8,28 +8,23 @@ const { title } = Astro.props;
 
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> -->
+        <meta name="generator" content={Astro.generator} />
+        <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+        <meta name="description" content="نرم افزار آزاد برای تست معتبر بودن درگاه های پرداخت بانکی ایران" />
+        <title>{title}</title>
+    </head>
+    <body>
+        <slot />
+    </body>
 </html>
 <style is:global>
-	:root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
-	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
+    html {
+        font-family: Vazirmatn, sans-serif;
+        background-color: #f6f6f6;
+    }
 </style>
